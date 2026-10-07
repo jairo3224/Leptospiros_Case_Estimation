@@ -1,0 +1,109 @@
+
+=== RMSE | All cities ===
+horizon                    0      1      2      3
+model                                            
+A_all_zero             2.601  2.612  2.628  2.638
+B_persistence          2.911  3.301  3.379  3.422
+C_poisson_regression   2.456  2.473  2.500  2.522
+XGB_case_only_pois     2.841  3.618  2.739  2.863
+XGB_case_weather_pois  2.295  2.432  2.486  2.535
+XGB_full_pois          2.342  2.430  2.482  2.541
+CAT_full_pois          2.439  2.459  2.512  2.688
+RF_full                4.470  3.743  2.680  2.651
+
+=== MAE | All cities ===
+horizon                    0      1      2      3
+model                                            
+A_all_zero             0.549  0.546  0.550  0.554
+B_persistence          0.583  0.629  0.681  0.694
+C_poisson_regression   0.787  0.790  0.805  0.836
+XGB_case_only_pois     0.637  0.790  0.813  0.859
+XGB_case_weather_pois  0.559  0.584  0.617  0.655
+XGB_full_pois          0.540  0.560  0.586  0.626
+CAT_full_pois          0.573  0.586  0.616  0.661
+RF_full                0.647  0.687  0.658  0.684
+
+=== Poisson_deviance | All cities ===
+horizon                    0      1      2      3
+model                                            
+A_all_zero             7.940  7.914  7.976  8.036
+B_persistence          2.771  3.057  3.549  3.530
+C_poisson_regression   1.642  1.634  1.696  1.796
+XGB_case_only_pois     1.247  1.635  1.658  1.790
+XGB_case_weather_pois  1.113  1.311  1.426  1.570
+XGB_full_pois          1.116  1.258  1.356  1.505
+CAT_full_pois          1.109  1.279  1.430  1.608
+RF_full                1.300  1.542  1.524  1.651
+
+=== RMSE | Tier 1 ===
+horizon                    0      1      2      3
+model                                            
+A_all_zero             3.977  3.994  4.020  4.033
+B_persistence          4.453  5.052  5.172  5.234
+C_poisson_regression   3.702  3.721  3.757  3.786
+XGB_case_only_pois     4.357  5.555  4.173  4.364
+XGB_case_weather_pois  3.507  3.718  3.798  3.871
+XGB_full_pois          3.582  3.716  3.793  3.884
+CAT_full_pois          3.737  3.758  3.836  4.111
+RF_full                6.874  4.261  3.938  4.028
+
+=== MAE | Tier 1 ===
+horizon                    0      1      2      3
+model                                            
+A_all_zero             1.074  1.073  1.081  1.087
+B_persistence          1.057  1.136  1.248  1.270
+C_poisson_regression   1.032  1.030  1.047  1.083
+XGB_case_only_pois     1.076  1.346  1.243  1.306
+XGB_case_weather_pois  0.940  0.984  1.030  1.095
+XGB_full_pois          0.951  0.995  1.033  1.116
+CAT_full_pois          0.978  0.988  1.027  1.132
+RF_full                1.180  1.108  1.129  1.217
+
+=== Poisson_deviance | Tier 1 ===
+horizon                     0       1       2       3
+model                                                
+A_all_zero             16.001  15.988  16.122  16.234
+B_persistence           4.376   4.842   5.965   5.897
+C_poisson_regression    2.315   2.275   2.372   2.531
+XGB_case_only_pois      2.034   2.809   2.632   2.863
+XGB_case_weather_pois   1.802   2.237   2.467   2.767
+XGB_full_pois           1.828   2.126   2.321   2.654
+CAT_full_pois           1.816   2.188   2.473   2.884
+RF_full                 2.143   2.379   2.489   2.825
+
+=== Ablation: % reduction in Poisson deviance (XGBoost, Poisson loss) ===
+horizon                                              0       1       2       3
+Weather added (case_only -> case_weather)       10.771  19.841  13.976  12.277
+Built environment added (case_weather -> full)  -0.286   4.065   4.949   4.156
+
+=== Per-city MAE at horizon 2 ===
+model                A_all_zero  B_persistence  XGB_case_weather_pois  XGB_full_pois
+city                                                                                
+Cagayan de Oro City       0.356          0.562                  0.559          0.545
+City of Mandaluyong       0.338          0.475                  0.405          0.374
+City of Muntinlupa        0.157          0.263                  0.283          0.279
+City of Navotas           0.485          0.747                  0.585          0.610
+Dagupan City              0.313          0.444                  0.479          0.487
+Davao City                1.242          1.314                  1.064          1.056
+Iloilo City               2.304          1.845                  1.806          1.772
+Legazpi City              0.113          0.206                  0.254          0.180
+Mandaue City              0.109          0.192                  0.224          0.152
+Palayan City              0.045          0.081                  0.218          0.128
+Tacloban City             0.078          0.145                  0.311          0.199
+Zamboanga City            1.088          1.918                  1.235          1.260
+
+=== Per-city Poisson deviance at horizon 2 ===
+model                A_all_zero  B_persistence  XGB_case_weather_pois  XGB_full_pois
+city                                                                                
+Cagayan de Oro City       4.547          3.604                  1.180          1.230
+City of Mandaluyong       4.349          3.053                  0.892          1.030
+City of Muntinlupa        1.974          1.862                  0.600          0.589
+City of Navotas           6.361          4.161                  1.208          1.195
+Dagupan City              4.185          2.579                  0.895          0.892
+Davao City               17.063          7.352                  2.448          1.994
+Iloilo City              34.241          6.968                  2.847          2.318
+Legazpi City              1.370          1.353                  0.548          0.529
+Mandaue City              1.336          1.298                  0.533          0.539
+Palayan City              0.553          0.574                  0.430          0.316
+Tacloban City             0.920          1.004                  0.599          0.426
+Zamboanga City           19.210          8.872                  4.993          5.260
