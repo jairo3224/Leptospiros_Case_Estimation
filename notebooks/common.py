@@ -40,6 +40,20 @@ TEST_START = pd.Timestamp("2019-02-04")  # ~5-week embargo after the training pe
 HORIZONS = [0, 1, 2, 3]  # weeks after the week the features describe (0 = the week itself)
 RANDOM_STATE = 42
 
+SEASON_FEATURES = ["sin_week", "cos_week"]
+WEATHER_NO_NDVI = [feature for feature in WEATHER_FEATURES if feature != "ndvi_mean_14d_lag"]
+
+
+def add_season(df: pd.DataFrame, h: int) -> pd.DataFrame:
+    """Add cyclical week-of-year features for the known target week."""
+    out = df.copy()
+    week = (
+        out["date"] + pd.Timedelta(weeks=h)
+    ).dt.isocalendar().week.astype(int).values
+    out["sin_week"] = np.sin(2 * np.pi * week / 52)
+    out["cos_week"] = np.cos(2 * np.pi * week / 52)
+    return out
+
 
 def target_col(h: int) -> str:
     return "weekly_cases" if h == 0 else f"target_h{h}"
@@ -69,12 +83,12 @@ def city_tiers(df: pd.DataFrame, zero_cutoff: float = 0.80) -> dict:
     return {c: ("Tier 1" if z < zero_cutoff else "Tier 2") for c, z in zero_share.items()}
 
 
-def make_xgb(objective: str = "count:poisson"):
+def make_xgb(objective: str = "count:poisson", seed: int = RANDOM_STATE):
     from xgboost import XGBRegressor
 
     return XGBRegressor(
         objective=objective, n_estimators=300, max_depth=4, learning_rate=0.05,
-        subsample=0.8, colsample_bytree=0.8, random_state=RANDOM_STATE, n_jobs=-1,
+        subsample=0.8, colsample_bytree=0.8, random_state=seed, n_jobs=-1,
     )
 
 

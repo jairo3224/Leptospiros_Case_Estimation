@@ -86,6 +86,24 @@ python notebooks/shap_analysis.py --horizon 2 --model xgboost
 python notebooks/summarize_results.py
 ```
 
+Additional robustness and model-comparison experiments:
+
+```bash
+python notebooks/exp_feature_sets.py
+python notebooks/exp_rolling_origin.py --horizons 2
+python notebooks/exp_hurdle.py
+python notebooks/exp_calibration.py
+python notebooks/exp_outlier_sensitivity.py --horizon 2
+python notebooks/tune_optuna.py --horizon 2 --features case_weather --trials 40
+python notebooks/exp_wilcoxon.py
+```
+
+The Open-Meteo comparison is optional and requires internet access; it fetches archived weather from the Open-Meteo API and caches responses under `data/`:
+
+```bash
+python notebooks/exp_open_meteo_check.py
+```
+
 Optional leave-one-city-out evaluation:
 
 ```bash
@@ -103,7 +121,7 @@ python -m unittest discover -s tests
 `requirements.txt` lists the app's core dependencies: pandas and Streamlit. To run the modelling and analysis scripts, install their additional packages in the activated environment:
 
 ```bash
-python -m pip install numpy scikit-learn xgboost catboost shap matplotlib
+python -m pip install numpy scikit-learn xgboost catboost shap matplotlib scipy optuna requests
 ```
 
 The Git LFS climate datasets are large, so cloning them requires sufficient Git LFS storage/bandwidth quota and may take time on a slower connection.
