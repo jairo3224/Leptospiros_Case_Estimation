@@ -25,6 +25,22 @@ MODEL_INPUTS = {
 }
 
 
+def validate_date_column(
+    frame: pd.DataFrame,
+    column: str,
+    dataset_name: str,
+) -> None:
+    """Reject missing or unparsable dates before the replay UI uses them."""
+    if column not in frame.columns:
+        raise ValueError(f"{dataset_name} is missing required date column {column!r}.")
+    invalid_count = int(frame[column].isna().sum())
+    if invalid_count:
+        raise ValueError(
+            f"{dataset_name} contains {invalid_count} missing or invalid values "
+            f"in its {column!r} column."
+        )
+
+
 def target_week(anchor_date: pd.Timestamp, horizon: int) -> pd.Timestamp:
     if horizon not in HORIZONS:
         raise ValueError(f"Unsupported forecast horizon: {horizon}")
@@ -126,6 +142,9 @@ def load_replay_data() -> tuple[
     training = pd.read_csv(training_path, parse_dates=["date"])
     metrics = pd.read_csv(metrics_path)
     weather = pd.read_csv(weather_path, parse_dates=["date"])
+    validate_date_column(predictions, "date", "predictions.csv")
+    validate_date_column(training, "date", "final_training_data.csv")
+    validate_date_column(weather, "date", "city_daily_weather.csv")
     required_predictions = {"date", "city", "horizon", "model", "y_true", "y_pred"}
     missing = required_predictions - set(predictions.columns)
     if missing:

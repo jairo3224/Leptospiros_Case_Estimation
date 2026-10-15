@@ -7,10 +7,22 @@ from app import (
     get_saved_prediction,
     get_weather_week,
     target_week,
+    validate_date_column,
 )
 
 
 class ReplayHelpersTests(unittest.TestCase):
+    def test_validate_date_column_accepts_parsed_dates(self) -> None:
+        frame = pd.DataFrame({"date": pd.to_datetime(["2022-12-05"])})
+
+        validate_date_column(frame, "date", "predictions.csv")
+
+    def test_validate_date_column_rejects_missing_dates_with_dataset_context(self) -> None:
+        frame = pd.DataFrame({"date": pd.to_datetime(["2022-12-05", None])})
+
+        with self.assertRaisesRegex(ValueError, "predictions.csv.*1.*date"):
+            validate_date_column(frame, "date", "predictions.csv")
+
     def test_target_week_adds_selected_horizon(self) -> None:
         anchor = pd.Timestamp("2022-12-05")
 
